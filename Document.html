@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>Line Numbers</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+<article data-label="Code format">
+	<section>
+		<header><h3>Line Numbers</h3></header>
+		<p>A demonstration document showing blocks of code formatted into numbered code lines. This code ignores <code>inline code</code> and only applies formatting to text wrapped in &lt;pre&gt; with nested &lt;code&gt; blocks. This skeleton example makes use of <a href="https://github.com/cypnk/Document.html">Document.html</a>, but you can use your own styling. The JavaScript is self-contained.</p>
+		<p>This is a full single line of code.</p>
+		<pre><code>function test { return true; }</code></pre>
+	</section>
+	<section data-label="Full detail">
+		<p>A demonstration of muli-line code using the same JavaScript used to render this feature.</p>
+
+<pre><code>( function () {
+	// Try to return to intended state
+	function unescape( str ) {
+		let esc = 
+		str.replace( /&amp;lt;/g, '&lt;' )
+			.replace(/&amp;gt;/g, '&gt;' )
+			.replace( /&amp;amp;/g, '&amp;' ) ;
+		return esc;
+	}
+	
+	// Begin formatting
+	function lineNumbers( block, wrap ) {
+		
+		// Line numbers wrapper
+		const lineNumDiv	= document.createElement( 'div' );
+		lineNumDiv.classList.add( 'line-numbers' );
+		
+		// Code lines wrapper
+		const codeDiv		= document.createElement( 'div' );
+		codeDiv.classList.add( 'code' );
+		
+		// Format lines to line number and code
+		const lines	= block.innerHTML.split( '\n' );
+		const cl	= lines.length;
+		lines.forEach( ( line, i ) => {
+			const ln = document.createElement( 'span' );
+			ln.setAttribute( 'class', 'line-number' );
+			ln.innerHTML = i + 1;
+			lineNumDiv.appendChild( ln );
+			lineNumDiv.appendChild( document.createElement( 'br' ) );
+			
+			const cl = document.createElement( 'div' );
+			cl.setAttribute( 'class', 
+				( line.trim() == '' ) ? 
+					'code-line empty' : 
+					'code-line'
+			);
+			cl.innerHTML = line;
+			codeDiv.appendChild( cl );
+		} );
+		
+		// Message dialog
+		const copyMsg		= document.createElement( 'dialog' );
+		const copyMsgBtn	= document.createElement( 'button' );
+		
+		// Message text
+		const copyP		= document.createElement( 'p' );
+		copyP.innerHTML		= 
+			cl + ' Line' + ( cl == 1 ? '' : 's' ) + 
+				' of code copied to clipboard &nbsp';
+		
+		copyMsgBtn.innerText	= 'Ok';
+		copyMsgBtn.addEventListener( 'click', ( e ) => {
+			copyMsg.close();
+		} );
+		copyP.appendChild( copyMsgBtn );
+		copyMsg.appendChild( copyP );
+		
+		// Copy to clipboard button
+		const copyLbl		= 'Copy code to clipboard';
+		const copyBtn		= document.createElement( 'button' );
+		copyBtn.innerText	= 'Copy';
+		copyBtn.classList.add( 'code-copy' );
+		copyBtn.setAttribute( 'aria-label', copyLbl );
+		copyBtn.setAttribute( 'title', copyLbl );
+		copyBtn.addEventListener( 'click', ( e ) => {
+			navigator.clipboard.writeText( unescape( block.innerHTML ) ) 
+			.then( () => { copyMsg.showModal(); } )
+			.catch( ( err ) => {
+				console.error( 'Error copying code', err );
+				alert( 'Error copying code' );
+			} );
+		} );
+		
+		wrap.innerHTML	= '';
+		wrap.appendChild( copyMsg );
+		//wrap.appendChild( codeBlock );
+		wrap.appendChild( lineNumDiv );
+		wrap.appendChild( codeDiv );
+		wrap.appendChild( copyBtn );
+	}
+	
+	// Run on load
+	window.addEventListener( 'load', ( e ) => {
+		// Find existing blocks
+		const code = document.querySelectorAll( 'pre code' );
+		
+		// Wrap in .code-wrap divs and send for processin
+		[...code].forEach( ( block ) => {
+			const wrap = document.createElement( 'div' );
+			wrap.setAttribute( 'class', 'code-wrap' );
+			block.parentNode.replaceChild( wrap, block );
+			lineNumbers( block, wrap );
+		} );
+	} );
+} )();</code></pre>
+		<p>Note &lt; and &gt; tags may show as &amp;lt; and &amp;gt; when copied due to the formatting inside &lt;code&gt;, especialy with deeply nested code. This is because the formatting is very simple.</p>
+	</section>
+</article>
+
+</main>
+
+
+<script type="text/JavaScript">
+( function () {
+	// Try to return to intended state
+	function unescape( str ) {
+		let esc = 
+		str.replace( /&lt;/g, '<' )
+			.replace( /&gt;/g, '>' )
+			.replace( /&amp;/g, '&' ) ;
+		return esc;
+	}
+	
+	// Begin formatting
+	function lineNumbers( block, wrap ) {
+		
+		// Line numbers wrapper
+		const lineNumDiv	= document.createElement( 'div' );
+		lineNumDiv.classList.add( 'line-numbers' );
+		
+		// Code lines wrapper
+		const codeDiv		= document.createElement( 'div' );
+		codeDiv.classList.add( 'code' );
+		
+		// Format lines to line number and code
+		const raw 	= block.innerHTML;
+		const lines	= raw.split( '\n' );
+		const cl	= lines.length;
+		lines.forEach( ( line, i ) => {
+			const ln = document.createElement( 'span' );
+			ln.setAttribute( 'class', 'line-number' );
+			ln.innerHTML = i + 1;
+			lineNumDiv.appendChild( ln );
+			lineNumDiv.appendChild( document.createElement( 'br' ) );
+			
+			const cl = document.createElement( 'div' );
+			cl.setAttribute( 'class', 
+				( line.trim() == '' ) ? 
+					'code-line empty' : 
+					'code-line'
+			);
+			cl.innerHTML = line;
+			codeDiv.appendChild( cl );
+		} );
+		
+		// Message dialog
+		const copyMsg		= document.createElement( 'dialog' );
+		const copyMsgBtn	= document.createElement( 'button' );
+		
+		// Message text
+		const copyP		= document.createElement( 'p' );
+		copyP.innerHTML		= 
+			cl + ' Line' + ( cl == 1 ? '' : 's' ) + 
+				' of code copied to clipboard &nbsp';
+		
+		copyMsgBtn.innerText	= 'Ok';
+		copyMsgBtn.addEventListener( 'click', ( e ) => {
+			copyMsg.close();
+		} );
+		copyP.appendChild( copyMsgBtn );
+		copyMsg.appendChild( copyP );
+		
+		// Copy to clipboard button
+		const copyLbl		= 'Copy code to clipboard';
+		const copyBtn		= document.createElement( 'button' );
+		copyBtn.innerText	= 'Copy';
+		copyBtn.classList.add( 'code-copy' );
+		copyBtn.setAttribute( 'aria-label', copyLbl );
+		copyBtn.setAttribute( 'title', copyLbl );
+		copyBtn.addEventListener( 'click', ( e ) => {
+			navigator.clipboard.writeText( unescape( raw ) ) 
+			.then( () => { copyMsg.showModal(); } )
+			.catch( ( err ) => {
+				console.error( 'Error copying code', err );
+				alert( 'Error copying code' );
+			} );
+		} );
+		
+		wrap.innerHTML	= '';
+		wrap.appendChild( copyMsg );
+		wrap.appendChild( lineNumDiv );
+		wrap.appendChild( codeDiv );
+		wrap.appendChild( copyBtn );
+	}
+	
+	// Run on load
+	window.addEventListener( 'load', ( e ) => {
+		// Find existing blocks
+		const code = document.querySelectorAll( 'pre code' );
+		
+		// Wrap in .code-wrap divs and send for processin
+		[...code].forEach( ( block ) => {
+			const wrap = document.createElement( 'div' );
+			wrap.setAttribute( 'class', 'code-wrap' );
+			block.parentNode.replaceChild( wrap, block );
+			lineNumbers( block, wrap );
+		} );
+	} );
+} )();</script>
+</body>
+</html>
+
