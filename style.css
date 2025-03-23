@@ -258,12 +258,23 @@ pre {
 /* Code line custom */
 .code, .line-numbers {
 	border: 0;
+	white-space: pre;
+	word-wrap: normal;
+	overflow-wrap: normal;
+}
+
+.code {
+	overflow-x: scroll;
 }
 
 
 code, .code, .line-numbers {
 	padding:0.1rem 0.3rem;
 	font-size: 75%;
+}
+.line-numbers, .code-line {
+	font-size: 100%;
+	line-height: 1.5;
 }
 
 pre code, pre .code {
