@@ -20,24 +20,24 @@
 
 <pre><code>( function () {
 	// Try to return to intended state
-	function unescape( str ) {
+	function unescapeChars( str ) {
 		// Add more as needed...
 		const entities	= {
-			'lt'	: '&lt;',
-			'gt'	: '&gt;',
-			'quot'	: '&quot;',
-			'apos'	: '\&apos;',
-			'#039'	: '\&apos;',
-			'#96'	: '&#96;',
-			'amp'	: '&amp;'
+			&apos;lt&apos;	: &apos;&lt;&apos;,
+			&apos;gt&apos;	: &apos;&gt;&apos;,
+			&apos;quot&apos;	: &apos;"&apos;,
+			&apos;apos&apos;	: &apos;\&apos;&apos;,
+			&apos;#039&apos;	: &apos;\&apos;&apos;,
+			&apos;#96&apos;	: &apos;&#96;&apos;,
+			&apos;amp&apos;	: &apos;&amp;&apos;
 		};
 		
-		const pat	= Object.keys( entities ).join( '|' );
-		const rx	= new RegExp( `&amp;{pat}`, 'g' );
+		const pat	= Object.keys( entities ).join( &apos;|&apos; );
+		const rx	= new RegExp( &#96;&amp;(${pat});&#96;, &apos;g&apos; );
 		const esc	= 
 		str.replace( 
-			rx, ( match, entity ) => {
-				return entities[entity] || march;
+			rx, ( match, entity ) =&gt; {
+				return entities[entity] || match;
 			} 
 		);
 		return esc;
@@ -47,83 +47,83 @@
 	function lineNumbers( block, wrap ) {
 		
 		// Line numbers wrapper
-		const lineNumDiv	= document.createElement( 'div' );
-		lineNumDiv.classList.add( 'line-numbers' );
+		const lineNumDiv	= document.createElement( &apos;div&apos; );
+		lineNumDiv.classList.add( &apos;line-numbers&apos; );
 		
 		// Code lines wrapper
-		const codeDiv		= document.createElement( 'div' );
-		codeDiv.classList.add( 'code' );
+		const codeDiv		= document.createElement( &apos;div&apos; );
+		codeDiv.classList.add( &apos;code&apos; );
 		
 		// Format lines to line number and code
-		const lines	= block.innerHTML.split( '\n' );
+		const raw 	= block.innerHTML;
+		const lines	= raw.split( &apos;\n&apos; );
 		const cl	= lines.length;
-		lines.forEach( ( line, i ) => {
-			const ln = document.createElement( 'span' );
-			ln.setAttribute( 'class', 'line-number' );
+		lines.forEach( ( line, i ) =&gt; {
+			const ln = document.createElement( &apos;span&apos; );
+			ln.setAttribute( &apos;class&apos;, &apos;line-numbers&apos; );
 			ln.innerHTML = i + 1;
 			lineNumDiv.appendChild( ln );
-			lineNumDiv.appendChild( document.createElement( 'br' ) );
+			lineNumDiv.appendChild( document.createElement( &apos;br&apos; ) );
 			
-			const cl = document.createElement( 'div' );
-			cl.setAttribute( 'class', 
-				( line.trim() == '' ) ? 
-					'code-line empty' : 
-					'code-line'
+			const cl = document.createElement( &apos;div&apos; );
+			cl.setAttribute( &apos;class&apos;, 
+				( line.trim() == &apos;&apos; ) ? 
+					&apos;code-line empty&apos; : 
+					&apos;code-line&apos;
 			);
 			cl.innerHTML = line;
 			codeDiv.appendChild( cl );
 		} );
 		
 		// Message dialog
-		const copyMsg		= document.createElement( 'dialog' );
-		const copyMsgBtn	= document.createElement( 'button' );
+		const copyMsg		= document.createElement( &apos;dialog&apos; );
+		const copyMsgBtn	= document.createElement( &apos;button&apos; );
 		
 		// Message text
-		const copyP		= document.createElement( 'p' );
+		const copyP		= document.createElement( &apos;p&apos; );
 		copyP.innerHTML		= 
-			cl + ' Line' + ( cl == 1 ? '' : 's' ) + 
-				' of code copied to clipboard &nbsp';
+			cl + &apos; Line&apos; + ( cl == 1 ? &apos;&apos; : &apos;s&apos; ) + 
+				&apos; of code copied to clipboard &amp;nbsp;&apos;;
 		
-		copyMsgBtn.innerText	= 'Ok';
-		copyMsgBtn.addEventListener( 'click', ( e ) => {
+		copyMsgBtn.innerText	= &apos;Ok&apos;;
+		copyMsgBtn.addEventListener( &apos;click&apos;, ( e ) =&gt; {
 			copyMsg.close();
 		} );
 		copyP.appendChild( copyMsgBtn );
 		copyMsg.appendChild( copyP );
 		
 		// Copy to clipboard button
-		const copyLbl		= 'Copy code to clipboard';
-		const copyBtn		= document.createElement( 'button' );
-		copyBtn.innerText	= 'Copy';
-		copyBtn.classList.add( 'code-copy' );
-		copyBtn.setAttribute( 'aria-label', copyLbl );
-		copyBtn.setAttribute( 'title', copyLbl );
-		copyBtn.addEventListener( 'click', ( e ) => {
-			navigator.clipboard.writeText( unescape( block.innerHTML ) ) 
-			.then( () => { copyMsg.showModal(); } )
-			.catch( ( err ) => {
-				console.error( 'Error copying code', err );
-				alert( 'Error copying code' );
+		const copyLbl		= &apos;Copy code to clipboard&apos;;
+		const copyBtn		= document.createElement( &apos;button&apos; );
+		copyBtn.innerText	= &apos;Copy&apos;;
+		copyBtn.classList.add( &apos;code-copy&apos; );
+		copyBtn.setAttribute( &apos;aria-label&apos;, copyLbl );
+		copyBtn.setAttribute( &apos;title&apos;, copyLbl );
+		copyBtn.addEventListener( &apos;click&apos;, ( e ) =&gt; {
+			navigator.clipboard.writeText( unescapeChars( raw ) ) 
+			.then( () =&gt; { copyMsg.showModal(); } )
+			.catch( ( err ) =&gt; {
+				console.error( &apos;Error copying code&apos;, err );
+				alert( &apos;Error copying code&apos; );
 			} );
 		} );
 		
-		wrap.innerHTML	= '';
+		wrap.innerHTML	= &apos;&apos;;
 		wrap.appendChild( copyMsg );
-		//wrap.appendChild( codeBlock );
 		wrap.appendChild( lineNumDiv );
 		wrap.appendChild( codeDiv );
 		wrap.appendChild( copyBtn );
 	}
 	
 	// Run on load
-	window.addEventListener( 'load', ( e ) => {
+	window.addEventListener( &apos;load&apos;, ( e ) =&gt; {
 		// Find existing blocks
-		const code = document.querySelectorAll( 'pre code' );
+		const code = document.querySelectorAll( &apos;pre code&apos; );
 		
 		// Wrap in .code-wrap divs and send for processin
-		[...code].forEach( ( block ) => {
-			const wrap = document.createElement( 'div' );
-			wrap.setAttribute( 'class', 'code-wrap' );
+		[...code].forEach( ( block ) =&gt; {
+			const wrap = document.createElement( &apos;div&apos; );
+			wrap.setAttribute( &apos;class&apos;, &apos;code-wrap&apos; );
 			block.parentNode.replaceChild( wrap, block );
 			lineNumbers( block, wrap );
 		} );
@@ -139,7 +139,7 @@
 <script type="text/JavaScript">
 ( function () {
 	// Try to return to intended state
-	function unescape( str ) {
+	function unescapeChars( str ) {
 		// Add more as needed...
 		const entities	= {
 			'lt'	: '<',
@@ -152,11 +152,11 @@
 		};
 		
 		const pat	= Object.keys( entities ).join( '|' );
-		const rx	= new RegExp( `&{pat}`, 'g' );
+		const rx	= new RegExp( `&(${pat});`, 'g' );
 		const esc	= 
 		str.replace( 
 			rx, ( match, entity ) => {
-				return entities[entity] || march;
+				return entities[entity] || match;
 			} 
 		);
 		return esc;
@@ -179,7 +179,7 @@
 		const cl	= lines.length;
 		lines.forEach( ( line, i ) => {
 			const ln = document.createElement( 'span' );
-			ln.setAttribute( 'class', 'line-number' );
+			ln.setAttribute( 'class', 'line-numbers' );
 			ln.innerHTML = i + 1;
 			lineNumDiv.appendChild( ln );
 			lineNumDiv.appendChild( document.createElement( 'br' ) );
@@ -202,7 +202,7 @@
 		const copyP		= document.createElement( 'p' );
 		copyP.innerHTML		= 
 			cl + ' Line' + ( cl == 1 ? '' : 's' ) + 
-				' of code copied to clipboard &nbsp';
+				' of code copied to clipboard &nbsp;';
 		
 		copyMsgBtn.innerText	= 'Ok';
 		copyMsgBtn.addEventListener( 'click', ( e ) => {
@@ -219,7 +219,7 @@
 		copyBtn.setAttribute( 'aria-label', copyLbl );
 		copyBtn.setAttribute( 'title', copyLbl );
 		copyBtn.addEventListener( 'click', ( e ) => {
-			navigator.clipboard.writeText( unescape( raw ) ) 
+			navigator.clipboard.writeText( unescapeChars( raw ) ) 
 			.then( () => { copyMsg.showModal(); } )
 			.catch( ( err ) => {
 				console.error( 'Error copying code', err );
