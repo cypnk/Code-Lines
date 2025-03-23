@@ -21,10 +21,25 @@
 <pre><code>( function () {
 	// Try to return to intended state
 	function unescape( str ) {
-		let esc = 
-		str.replace( /&amp;lt;/g, '&lt;' )
-			.replace(/&amp;gt;/g, '&gt;' )
-			.replace( /&amp;amp;/g, '&amp;' ) ;
+		// Add more as needed...
+		const entities	= {
+			'lt'	: '&lt;',
+			'gt'	: '&gt;',
+			'quot'	: '&quot;',
+			'apos'	: '\&apos;',
+			'#039'	: '\&apos;',
+			'#96'	: '&#96;',
+			'amp'	: '&amp;'
+		};
+		
+		const pat	= Object.keys( entities ).join( '|' );
+		const rx	= new RegExp( `&amp;{pat}`, 'g' );
+		const esc	= 
+		str.replace( 
+			rx, ( match, entity ) => {
+				return entities[entity] || march;
+			} 
+		);
 		return esc;
 	}
 	
@@ -125,10 +140,25 @@
 ( function () {
 	// Try to return to intended state
 	function unescape( str ) {
-		let esc = 
-		str.replace( /&lt;/g, '<' )
-			.replace( /&gt;/g, '>' )
-			.replace( /&amp;/g, '&' ) ;
+		// Add more as needed...
+		const entities	= {
+			'lt'	: '<',
+			'gt'	: '>',
+			'quot'	: '"',
+			'apos'	: '\'',
+			'#039'	: '\'',
+			'#96'	: '`',
+			'amp'	: '&'
+		};
+		
+		const pat	= Object.keys( entities ).join( '|' );
+		const rx	= new RegExp( `&{pat}`, 'g' );
+		const esc	= 
+		str.replace( 
+			rx, ( match, entity ) => {
+				return entities[entity] || march;
+			} 
+		);
 		return esc;
 	}
 	
