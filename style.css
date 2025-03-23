@@ -267,13 +267,12 @@ pre {
 	overflow-x: scroll;
 }
 
-
 code, .code, .line-numbers {
 	padding:0.1rem 0.3rem;
 	font-size: 75%;
 }
-.line-numbers, .code-line {
-	font-size: 100%;
+
+.line-number, .code-line {
 	line-height: 1.5;
 }
 
