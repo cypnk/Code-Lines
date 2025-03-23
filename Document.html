@@ -60,7 +60,7 @@
 		const cl	= lines.length;
 		lines.forEach( ( line, i ) =&gt; {
 			const ln = document.createElement( &apos;span&apos; );
-			ln.setAttribute( &apos;class&apos;, &apos;line-numbers&apos; );
+			ln.setAttribute( &apos;class&apos;, &apos;line-number&apos; );
 			ln.innerHTML = i + 1;
 			lineNumDiv.appendChild( ln );
 			lineNumDiv.appendChild( document.createElement( &apos;br&apos; ) );
@@ -179,7 +179,7 @@
 		const cl	= lines.length;
 		lines.forEach( ( line, i ) => {
 			const ln = document.createElement( 'span' );
-			ln.setAttribute( 'class', 'line-numbers' );
+			ln.setAttribute( 'class', 'line-number' );
 			ln.innerHTML = i + 1;
 			lineNumDiv.appendChild( ln );
 			lineNumDiv.appendChild( document.createElement( 'br' ) );
